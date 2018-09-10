@@ -1012,7 +1012,7 @@ flags_unshaded = false
 flags_vertex_lighting = false
 flags_transparent = false
 vertex_color_use_as_albedo = false
-albedo_color = Color(0.49, 0.49, 0.49, 1.0)
+albedo_color = Color(0.723069, 0.723069, 0.723069, 1.0)
 subsurf_scatter_enabled = false
 
 [sub_resource id=40 type="ArrayMesh"]
