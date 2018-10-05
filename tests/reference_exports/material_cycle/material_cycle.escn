@@ -2,6 +2,7 @@
 
 [sub_resource id=1 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -38,10 +39,12 @@ void fragment() {
 
 [sub_resource id=2 type="ShaderMaterial"]
 
+resource_name = "Test Material"
 shader = SubResource(1)
 
 [sub_resource id=3 type="ArrayMesh"]
 
+resource_name = "SolidModel001"
 surfaces/0 = {
 	"material":SubResource(2),
 	"primitive":4,
@@ -61,6 +64,7 @@ surfaces/0 = {
 
 [sub_resource id=4 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 uniform float uni1_refraction_offset;
@@ -138,10 +142,12 @@ void fragment() {
 
 [sub_resource id=5 type="ShaderMaterial"]
 
+resource_name = "VariableMaterial"
 shader = SubResource(4)
 
 [sub_resource id=6 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -178,10 +184,12 @@ void fragment() {
 
 [sub_resource id=7 type="ShaderMaterial"]
 
+resource_name = "X-Gray160"
 shader = SubResource(6)
 
 [sub_resource id=8 type="ArrayMesh"]
 
+resource_name = "LogoOutside"
 surfaces/0 = {
 	"material":SubResource(7),
 	"primitive":4,
@@ -201,6 +209,7 @@ surfaces/0 = {
 
 [sub_resource id=9 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -258,10 +267,12 @@ void fragment() {
 
 [sub_resource id=10 type="ShaderMaterial"]
 
+resource_name = "Socket"
 shader = SubResource(9)
 
 [sub_resource id=11 type="ArrayMesh"]
 
+resource_name = "LogoInside001"
 surfaces/0 = {
 	"material":SubResource(10),
 	"primitive":4,
@@ -281,6 +292,7 @@ surfaces/0 = {
 
 [sub_resource id=12 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -317,10 +329,12 @@ void fragment() {
 
 [sub_resource id=13 type="ShaderMaterial"]
 
+resource_name = "Blender"
 shader = SubResource(12)
 
 [sub_resource id=14 type="ArrayMesh"]
 
+resource_name = "LogoFluidMaterial001"
 surfaces/0 = {
 	"material":SubResource(13),
 	"primitive":4,
@@ -340,6 +354,7 @@ surfaces/0 = {
 
 [sub_resource id=15 type="ArrayMesh"]
 
+resource_name = "Base001"
 surfaces/0 = {
 	"material":SubResource(10),
 	"primitive":4,
@@ -359,6 +374,7 @@ surfaces/0 = {
 
 [sub_resource id=16 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -395,10 +411,12 @@ void fragment() {
 
 [sub_resource id=17 type="ShaderMaterial"]
 
+resource_name = "Material004"
 shader = SubResource(16)
 
 [sub_resource id=18 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -496,10 +514,12 @@ void fragment() {
 
 [sub_resource id=19 type="ShaderMaterial"]
 
+resource_name = "Material003"
 shader = SubResource(18)
 
 [sub_resource id=20 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -536,10 +556,12 @@ void fragment() {
 
 [sub_resource id=21 type="ShaderMaterial"]
 
+resource_name = "Material002"
 shader = SubResource(20)
 
 [sub_resource id=22 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -576,10 +598,12 @@ void fragment() {
 
 [sub_resource id=23 type="ShaderMaterial"]
 
+resource_name = "Material005"
 shader = SubResource(22)
 
 [sub_resource id=24 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -619,10 +643,12 @@ void fragment() {
 
 [sub_resource id=25 type="ShaderMaterial"]
 
+resource_name = "Material006"
 shader = SubResource(24)
 
 [sub_resource id=26 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -667,10 +693,12 @@ void fragment() {
 
 [sub_resource id=27 type="ShaderMaterial"]
 
+resource_name = "Material007"
 shader = SubResource(26)
 
 [sub_resource id=28 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -749,10 +777,12 @@ void fragment() {
 
 [sub_resource id=29 type="ShaderMaterial"]
 
+resource_name = "Material008"
 shader = SubResource(28)
 
 [sub_resource id=30 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -810,10 +840,12 @@ void fragment() {
 
 [sub_resource id=31 type="ShaderMaterial"]
 
+resource_name = "Material012"
 shader = SubResource(30)
 
 [sub_resource id=32 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -852,10 +884,12 @@ void fragment() {
 
 [sub_resource id=33 type="ShaderMaterial"]
 
+resource_name = "Material011"
 shader = SubResource(32)
 
 [sub_resource id=34 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 uniform float uni1_refraction_offset;
@@ -906,10 +940,12 @@ void fragment() {
 
 [sub_resource id=35 type="ShaderMaterial"]
 
+resource_name = "Material010"
 shader = SubResource(34)
 
 [sub_resource id=36 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -946,10 +982,12 @@ void fragment() {
 
 [sub_resource id=37 type="ShaderMaterial"]
 
+resource_name = "Material001"
 shader = SubResource(36)
 
 [sub_resource id=38 type="ArrayMesh"]
 
+resource_name = "Plane"
 surfaces/0 = {
 	"material":SubResource(37),
 	"primitive":4,
@@ -969,6 +1007,7 @@ surfaces/0 = {
 
 [sub_resource id=39 type="SpatialMaterial"]
 
+resource_name = "X-Gray191001"
 flags_unshaded = false
 flags_vertex_lighting = false
 flags_transparent = false
@@ -978,6 +1017,7 @@ subsurf_scatter_enabled = false
 
 [sub_resource id=40 type="ArrayMesh"]
 
+resource_name = "TextBase001"
 surfaces/0 = {
 	"material":SubResource(39),
 	"primitive":4,
@@ -997,6 +1037,7 @@ surfaces/0 = {
 
 [sub_resource id=41 type="ArrayMesh"]
 
+resource_name = "Grid"
 surfaces/0 = {
 	"material":SubResource(10),
 	"primitive":4,
@@ -1016,6 +1057,7 @@ surfaces/0 = {
 
 [sub_resource id=42 type="Shader"]
 
+resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix,depth_draw_always,cull_back,diffuse_burley,specular_schlick_ggx;
 
@@ -1122,6 +1164,7 @@ void fragment() {
 
 [sub_resource id=43 type="ShaderMaterial"]
 
+resource_name = "Material009"
 shader = SubResource(42)
 [node type="Spatial" name="Scene"]
 
