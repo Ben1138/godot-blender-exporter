@@ -39,7 +39,7 @@ void fragment() {
 
 [sub_resource id=2 type="ShaderMaterial"]
 
-resource_name = "Test Material"
+resource_name = ""
 shader = SubResource(1)
 
 [sub_resource id=3 type="ArrayMesh"]
@@ -142,7 +142,7 @@ void fragment() {
 
 [sub_resource id=5 type="ShaderMaterial"]
 
-resource_name = "VariableMaterial"
+resource_name = ""
 shader = SubResource(4)
 
 [sub_resource id=6 type="Shader"]
@@ -184,7 +184,7 @@ void fragment() {
 
 [sub_resource id=7 type="ShaderMaterial"]
 
-resource_name = "X-Gray160"
+resource_name = ""
 shader = SubResource(6)
 
 [sub_resource id=8 type="ArrayMesh"]
@@ -267,7 +267,7 @@ void fragment() {
 
 [sub_resource id=10 type="ShaderMaterial"]
 
-resource_name = "Socket"
+resource_name = ""
 shader = SubResource(9)
 
 [sub_resource id=11 type="ArrayMesh"]
@@ -329,7 +329,7 @@ void fragment() {
 
 [sub_resource id=13 type="ShaderMaterial"]
 
-resource_name = "Blender"
+resource_name = ""
 shader = SubResource(12)
 
 [sub_resource id=14 type="ArrayMesh"]
@@ -411,7 +411,7 @@ void fragment() {
 
 [sub_resource id=17 type="ShaderMaterial"]
 
-resource_name = "Material004"
+resource_name = ""
 shader = SubResource(16)
 
 [sub_resource id=18 type="Shader"]
@@ -514,7 +514,7 @@ void fragment() {
 
 [sub_resource id=19 type="ShaderMaterial"]
 
-resource_name = "Material003"
+resource_name = ""
 shader = SubResource(18)
 
 [sub_resource id=20 type="Shader"]
@@ -556,7 +556,7 @@ void fragment() {
 
 [sub_resource id=21 type="ShaderMaterial"]
 
-resource_name = "Material002"
+resource_name = ""
 shader = SubResource(20)
 
 [sub_resource id=22 type="Shader"]
@@ -598,7 +598,7 @@ void fragment() {
 
 [sub_resource id=23 type="ShaderMaterial"]
 
-resource_name = "Material005"
+resource_name = ""
 shader = SubResource(22)
 
 [sub_resource id=24 type="Shader"]
@@ -643,7 +643,7 @@ void fragment() {
 
 [sub_resource id=25 type="ShaderMaterial"]
 
-resource_name = "Material006"
+resource_name = ""
 shader = SubResource(24)
 
 [sub_resource id=26 type="Shader"]
@@ -693,7 +693,7 @@ void fragment() {
 
 [sub_resource id=27 type="ShaderMaterial"]
 
-resource_name = "Material007"
+resource_name = ""
 shader = SubResource(26)
 
 [sub_resource id=28 type="Shader"]
@@ -777,7 +777,7 @@ void fragment() {
 
 [sub_resource id=29 type="ShaderMaterial"]
 
-resource_name = "Material008"
+resource_name = ""
 shader = SubResource(28)
 
 [sub_resource id=30 type="Shader"]
@@ -840,7 +840,7 @@ void fragment() {
 
 [sub_resource id=31 type="ShaderMaterial"]
 
-resource_name = "Material012"
+resource_name = ""
 shader = SubResource(30)
 
 [sub_resource id=32 type="Shader"]
@@ -884,7 +884,7 @@ void fragment() {
 
 [sub_resource id=33 type="ShaderMaterial"]
 
-resource_name = "Material011"
+resource_name = ""
 shader = SubResource(32)
 
 [sub_resource id=34 type="Shader"]
@@ -940,7 +940,7 @@ void fragment() {
 
 [sub_resource id=35 type="ShaderMaterial"]
 
-resource_name = "Material010"
+resource_name = ""
 shader = SubResource(34)
 
 [sub_resource id=36 type="Shader"]
@@ -982,7 +982,7 @@ void fragment() {
 
 [sub_resource id=37 type="ShaderMaterial"]
 
-resource_name = "Material001"
+resource_name = ""
 shader = SubResource(36)
 
 [sub_resource id=38 type="ArrayMesh"]
@@ -1007,7 +1007,7 @@ surfaces/0 = {
 
 [sub_resource id=39 type="SpatialMaterial"]
 
-resource_name = "X-Gray191001"
+resource_name = ""
 flags_unshaded = false
 flags_vertex_lighting = false
 flags_transparent = false
@@ -1164,7 +1164,7 @@ void fragment() {
 
 [sub_resource id=43 type="ShaderMaterial"]
 
-resource_name = "Material009"
+resource_name = ""
 shader = SubResource(42)
 [node type="Spatial" name="Scene"]
 
