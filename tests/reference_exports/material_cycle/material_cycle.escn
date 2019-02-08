@@ -1678,8 +1678,10 @@ mesh = SubResource(15)
 visible = true
 transform = Transform(0.106031, 0.0, 0.0, 0.0, 0.106031, 0.0, 0.0, 0.0, 0.106031, -2.73547, 0.200765, 0.454187)
 
-[node name="Base" type="Spatial" parent="."]
+[node name="Base" type="MeshInstance" parent="."]
 
+mesh = SubResource(15)
+visible = true
 transform = Transform(0.106031, 0.0, 0.0, 0.0, 0.106031, 0.0, 0.0, 0.0, 0.106031, 0.0295276, 0.178654, 0.462086)
 
 [node name="TextBase" type="MeshInstance" parent="Base"]
