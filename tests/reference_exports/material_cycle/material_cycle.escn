@@ -1699,27 +1699,25 @@ material/0 = SubResource(39)
 
 [node name="Spot001" type="SpotLight" parent="."]
 
-light_specular = 1.0
 light_energy = 1.0
 light_color = Color(1.0, 1.0, 1.0, 1.0)
-shadow_color = Color(0.0, 0.0, 0.0, 1.0)
 spot_angle = 17.4
 spot_angle_attenuation = 1.25
 spot_range = 25.0
 transform = Transform(0.629608, 0.0765798, 0.77313, -0.776913, 0.06206, 0.626542, 0.0, -0.99513, 0.0985693, 5.32508, 4.74617, 0.487329)
 shadow_enabled = true
+light_negative = false
 
 [node name="Spot" type="SpotLight" parent="."]
 
-light_specular = 1.0
 light_energy = 1.0
 light_color = Color(1.0, 1.0, 1.0, 1.0)
-shadow_color = Color(0.0, 0.0, 0.0, 1.0)
 spot_angle = 24.3
 spot_angle_attenuation = 1.25
 spot_range = 25.0
 transform = Transform(0.633641, 0.273452, -0.723687, 0.117184, 0.890727, 0.439173, 0.764701, -0.363082, 0.532357, -4.6068, 2.54209, 4.80618)
 shadow_enabled = true
+light_negative = false
 
 [node name="Plane" type="MeshInstance" parent="."]
 
