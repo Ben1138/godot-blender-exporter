@@ -1,17 +1,19 @@
 """Prewritten shader scripts for node in material node tree,
-reference: https://developer.blender.org/diffusion/B/browse/
-blender2.8/source/blender/gpu/shaders/gpu_shader_material.glsl"""
+reference: 'https://developer.blender.org/diffusion/B/browse/
+master/source/blender/gpu/shaders/gpu_shader_material.glsl'"""
 import re
-from ...structures import ValidationError
+from .shader_links import FragmentShaderLink
+from ....structures import ValidationError
 
 FUNCTION_HEAD_PATTERN = re.compile(
-    (r'void\s+([a-zA-Z]\w*)\s*\(((\s*(out\s+)?'
+    (r'void\s+([a-zA-Z]\w*)\s*\(((\s*((in|inout|out)\s+)?'
      r'(vec2|vec3|vec4|float|mat4|sampler2D)\s+[a-zA-Z]\w*\s*,?)*)\)'),
 )
 
 
 class ShaderFunction:
     """Shader function for a blender node"""
+
     def __init__(self, code):
         # at most one group
         self.code = code
@@ -26,18 +28,22 @@ class ShaderFunction:
             tokens = tuple([x.strip() for x in param_str.split()])
             if tokens[0] == 'out':
                 self.out_param_types.append(tokens[1])
-            else:
+            else:  # 'in', 'inout'
                 self.in_param_types.append(tokens[0])
+
+    def __hash__(self):
+        return hash(self.name)
 
 
 class BsdfShaderFunction(ShaderFunction):
     """Function for bsdf shader node, has additional information of
     input and output socket"""
-    def __init__(self, code, input_sockets, output_sockets):
+
+    def __init__(self, code, input_sockets, output_properties):
         super().__init__(code)
         # linked socket ids of material node
         self.in_sockets = tuple(input_sockets)
-        self.out_sockets = tuple(output_sockets)
+        self.output_properties = tuple(output_properties)
 
 
 # Shader function nameing convention:
@@ -105,55 +111,55 @@ void node_bsdf_principled(vec4 color, float subsurface, vec4 subsurface_color,
             "Transmission",
             "IOR",
         ],
-        output_sockets=[
-            "albedo",
-            "sss_strength",
-            "metallic",
-            "specular",
-            "roughness",
-            "clearcoat",
-            "clearcoat_gloss",
-            "anisotropy",
-            "transmission",
-            "ior",
+        output_properties=[
+            FragmentShaderLink.ALBEDO,
+            FragmentShaderLink.SSS_STRENGTH,
+            FragmentShaderLink.METALLIC,
+            FragmentShaderLink.SPECULAR,
+            FragmentShaderLink.ROUGHNESS,
+            FragmentShaderLink.CLEARCOAT,
+            FragmentShaderLink.CLEARCOAT_GLOSS,
+            FragmentShaderLink.ANISOTROPY,
+            FragmentShaderLink.TRANSMISSION,
+            FragmentShaderLink.IOR,
         ]
     ),
 
     BsdfShaderFunction(
         code="""
 void node_emission(vec4 emission_color, float strength,
-        out vec3 emission_out){
+        out vec3 emission_out) {
     emission_out = emission_color.rgb * strength;
 }
 """,
         input_sockets=["Color", "Strength"],
-        output_sockets=["emission"]
+        output_properties=[FragmentShaderLink.EMISSION]
     ),
 
     BsdfShaderFunction(
         code="""
 void node_bsdf_diffuse(vec4 color, float roughness, out vec3 albedo,
-        out float specular_out, out float roughness_out) {
+        out float specular_out, out float oren_nayar_roughness_out) {
     albedo = color.rgb;
     specular_out = 0.5;
-    roughness_out = 1.0;
+    oren_nayar_roughness_out = roughness;
 }
 """,
         input_sockets=[
             "Color",
             "Roughness",
         ],
-        output_sockets=[
-            "albedo",
-            "specular",
-            "oren_nayar_roughness",
+        output_properties=[
+            FragmentShaderLink.ALBEDO,
+            FragmentShaderLink.SPECULAR,
+            FragmentShaderLink.OREN_NAYAR_ROUGHNESS,
         ]
     ),
 
     BsdfShaderFunction(
         code="""
 void node_bsdf_glossy(vec4 color, float roughness, out vec3 albedo,
-        out float metallic_out, out float roughness_out){
+        out float metallic_out, out float roughness_out) {
     albedo = color.rgb;
     roughness_out = roughness;
     metallic_out = 1.0;
@@ -163,10 +169,10 @@ void node_bsdf_glossy(vec4 color, float roughness, out vec3 albedo,
             "Color",
             "Roughness",
         ],
-        output_sockets=[
-            "albedo",
-            "metallic",
-            "roughness",
+        output_properties=[
+            FragmentShaderLink.ALBEDO,
+            FragmentShaderLink.METALLIC,
+            FragmentShaderLink.ROUGHNESS,
         ]
     ),
 
@@ -177,7 +183,7 @@ void node_bsdf_transparent(vec4 color, out float alpha) {
 }
 """,
         input_sockets=['Color'],
-        output_sockets=['alpha'],
+        output_properties=[FragmentShaderLink.ALPHA],
     ),
 
     BsdfShaderFunction(
@@ -198,19 +204,19 @@ void node_bsdf_glass(vec4 color, float roughness, float IOR, out vec3 albedo,
             "Roughness",
             "IOR",
         ],
-        output_sockets=[
-            "albedo",
-            "alpha",
-            "specular",
-            "roughness",
-            "transmission",
-            "ior",
+        output_properties=[
+            FragmentShaderLink.ALBEDO,
+            FragmentShaderLink.ALPHA,
+            FragmentShaderLink.SPECULAR,
+            FragmentShaderLink.ROUGHNESS,
+            FragmentShaderLink.TRANSMISSION,
+            FragmentShaderLink.IOR,
         ]
     ),
 
     # trivial converter node functions
     ShaderFunction(code="""
-void node_rgb_to_bw(vec4 color, out float result){
+void node_rgb_to_bw(vec4 color, out float result) {
     result = color.r * 0.2126 + color.g * 0.7152 + color.b * 0.0722;
 }
 """),
@@ -239,7 +245,7 @@ void node_combine_rgb(float r, float g, float b, out vec4 color) {
 
     ShaderFunction(code="""
 void node_bump(float strength, float dist, float height, vec3 normal,
-               vec3 surf_pos, float invert, out vec3 out_normal){
+               vec3 surf_pos, float invert, out vec3 out_normal) {
     if (invert != 0.0) {
         dist *= -1.0;
     }
@@ -492,7 +498,7 @@ void node_math_power_clamp(float val1, float val2, out float outval) {
 """),
 
     ShaderFunction(code="""
-void node_math_logarithm_clamp(float val1, float val2, out float outval){
+void node_math_logarithm_clamp(float val1, float val2, out float outval) {
     if (val1 > 0.0  && val2 > 0.0)
         outval = clamp(log2(val1) / log2(val2), 0.0, 1.0);
     else
@@ -550,6 +556,70 @@ void node_vector_math_normalize(vec3 v, out vec3 outvec, out float outval) {
 """),
 
     # non-node function:
+    ShaderFunction(code="""
+void space_convert_zup_to_yup(inout vec3 dir) {
+    dir = mat3(vec3(1, 0, 0), vec3(0, 0, -1), vec3(0, 1, 0)) * dir;
+}
+"""),
+
+    ShaderFunction(code="""
+void space_convert_yup_to_zup(inout vec3 dir) {
+    dir = mat3(vec3(1, 0, 0), vec3(0, 0, 1), vec3(0, -1, 0)) * dir;
+}
+"""),
+
+    ShaderFunction(code="""
+void dir_space_convert_view_to_model(inout vec3 dir,
+        in mat4 inv_model_mat, in mat4 inv_view_mat) {
+    dir = normalize( inv_model_mat * (inv_view_mat * vec4(dir, 0.0))).xyz;
+}
+"""),
+
+    ShaderFunction(code="""
+void point_space_convert_view_to_model(inout vec3 pos,
+        in mat4 inv_model_mat, in mat4 inv_view_mat) {
+    pos = (inv_model_mat * (inv_view_mat * vec4(pos, 1.0))).xyz;
+}
+"""),
+
+    ShaderFunction(code="""
+void dir_space_convert_model_to_view(inout vec3 dir,
+        in mat4 view_mat, in mat4 model_mat) {
+    dir = normalize(view_mat * (model_mat * vec4(dir, 0.0))).xyz;
+}
+"""),
+
+    ShaderFunction(code="""
+void point_space_convert_model_to_view(inout vec3 pos,
+        in mat4 view_mat, in mat4 model_mat) {
+    pos = (view_mat * (model_mat * vec4(pos, 1.0))).xyz;
+}
+"""),
+
+    ShaderFunction(code="""
+void dir_space_convert_view_to_world(inout vec3 dir, in mat4 inv_view_mat) {
+    dir = normalize(inv_view_mat * vec4(dir, 0.0)).xyz;
+}
+"""),
+
+    ShaderFunction(code="""
+void point_space_convert_view_to_world(inout vec3 pos, in mat4 inv_view_mat) {
+    pos = (inv_view_mat * vec4(pos, 1.0)).xyz;
+}
+"""),
+
+    ShaderFunction(code="""
+void dir_space_convert_world_to_view(inout vec3 dir, in mat4 view_mat) {
+    dir = normalize(view_mat * vec4(dir, 0.0)).xyz;
+}
+"""),
+
+    ShaderFunction(code="""
+void point_space_convert_world_to_view(inout vec3 pos, in mat4 view_mat) {
+    pos = (view_mat * vec4(dir, 1.0)).xyz;
+}
+"""),
+
     ShaderFunction(code="""
 void refraction_fresnel(vec3 view_dir, vec3 normal, float ior, out float kr) {
 // reference [https://www.scratchapixel.com/lessons/
@@ -612,6 +682,12 @@ def convert_node_to_function_name(node):
         return function_name_base + "_" + node.space.lower()
 
     return function_name_base
+
+
+def node_has_function(node):
+    """Check if a shader node has associated functions"""
+    func_name = convert_node_to_function_name(node)
+    return func_name in FUNCTION_NAME_MAPPING
 
 
 def find_node_function(node):

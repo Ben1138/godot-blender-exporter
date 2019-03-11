@@ -7,8 +7,8 @@ tree into a flat bunch of parameters is not trivial. So for someone else:"""
 import logging
 import os
 import bpy
-from .material_node_tree.exporters import export_node_tree
-from ..structures import (
+from .script_shader import export_script_shader
+from ...structures import (
     InternalResource, ExternalResource, gamma_correct, ValidationError)
 
 
@@ -75,7 +75,7 @@ def generate_material_resource(escn_file, export_settings, material):
             material.node_tree is not None):
         mat = InternalResource("ShaderMaterial", material_rsc_name)
         try:
-            export_node_tree(
+            export_script_shader(
                 escn_file, export_settings, material, mat
             )
         except ValidationError as exception:
