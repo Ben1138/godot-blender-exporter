@@ -143,20 +143,20 @@ void fragment () {
 	float node2_shader_in7_roughness = node0_bsdf_out2_roughness;
 	vec3 node2_shader_in8_normal = node0_in2_normal;
 	// output sockets definitions
-	vec3 node2_var0_bsdf_albedo;
-	vec3 node2_var13_bsdf_normal;
+	vec3 node2_shader_out0_albedo;
+	vec3 node2_shader_out13_normal;
 	
-	node2_var0_bsdf_albedo = mix(node2_shader_in1_albedo, node2_shader_in5_albedo,
+	node2_shader_out0_albedo = mix(node2_shader_in1_albedo, node2_shader_in5_albedo,
 		node2_in0_fac);
-	node2_var13_bsdf_normal = mix(node2_shader_in4_normal, node2_shader_in8_normal,
-		node2_in0_fac);
+	node2_shader_out13_normal = mix(node2_shader_in4_normal,
+		node2_shader_in8_normal, node2_in0_fac);
 	
 	
-	ALBEDO = node2_var0_bsdf_albedo;
+	ALBEDO = node2_shader_out0_albedo;
 	SPECULAR = node2_shader_in2_specular;
 	METALLIC = node2_shader_in6_metallic;
 	ROUGHNESS = node2_shader_in7_roughness;
-	NORMAL = node2_var13_bsdf_normal;
+	NORMAL = node2_shader_out13_normal;
 	// uncomment it only when you set diffuse mode to oren nayar
 	// ROUGHNESS = node2_shader_in3_oren_nayar_roughness;
 }
@@ -1147,20 +1147,20 @@ void fragment () {
 	float node2_shader_in6_roughness = node0_bsdf_out2_roughness;
 	vec3 node2_shader_in7_normal = node0_in2_normal;
 	// output sockets definitions
-	vec3 node2_var0_bsdf_albedo;
-	vec3 node2_var13_bsdf_normal;
+	vec3 node2_shader_out0_albedo;
+	vec3 node2_shader_out13_normal;
 	
-	node2_var0_bsdf_albedo = mix(node2_shader_in0_albedo, node2_shader_in4_albedo,
+	node2_shader_out0_albedo = mix(node2_shader_in0_albedo, node2_shader_in4_albedo,
 		0.5);
-	node2_var13_bsdf_normal = mix(node2_shader_in3_normal, node2_shader_in7_normal,
-		0.5);
+	node2_shader_out13_normal = mix(node2_shader_in3_normal,
+		node2_shader_in7_normal, 0.5);
 	
 	
-	ALBEDO = node2_var0_bsdf_albedo;
+	ALBEDO = node2_shader_out0_albedo;
 	SPECULAR = node2_shader_in1_specular;
 	METALLIC = node2_shader_in5_metallic;
 	ROUGHNESS = node2_shader_in6_roughness;
-	NORMAL = node2_var13_bsdf_normal;
+	NORMAL = node2_shader_out13_normal;
 	// uncomment it only when you set diffuse mode to oren nayar
 	// ROUGHNESS = node2_shader_in2_oren_nayar_roughness;
 }
@@ -1219,13 +1219,13 @@ void fragment () {
 	vec3 node1_shader_in5_albedo = vec3(0.0, 0.0, 0.0);
 	vec3 node1_shader_in6_albedo = node1_shader_in5_albedo;
 	// output sockets definitions
-	vec3 node1_var0_bsdf_albedo;
+	vec3 node1_shader_out0_albedo;
 	
-	node1_var0_bsdf_albedo = mix(node1_shader_in1_albedo, node1_shader_in6_albedo,
+	node1_shader_out0_albedo = mix(node1_shader_in1_albedo, node1_shader_in6_albedo,
 		node1_in0_fac);
 	
 	
-	ALBEDO = node1_var0_bsdf_albedo;
+	ALBEDO = node1_shader_out0_albedo;
 	SPECULAR = node1_shader_in2_specular;
 	NORMAL = node1_shader_in4_normal;
 	// uncomment it only when you set diffuse mode to oren nayar
@@ -1244,7 +1244,6 @@ resource_name = "Shader Nodetree"
 code = "shader_type spatial;
 render_mode blend_mix, depth_draw_always, cull_back, diffuse_burley, specular_schlick_ggx;
 
-uniform vec2 refraction_offset = vec2(0.2, 0.2);
 
 
 void node_bsdf_diffuse(vec4 color, float roughness, out vec3 albedo,
@@ -1256,7 +1255,7 @@ void node_bsdf_diffuse(vec4 color, float roughness, out vec3 albedo,
 
 
 void node_bsdf_transparent(vec4 color, out float alpha) {
-    alpha = 0.0;
+    alpha = clamp(1.0 - dot(color.rgb, vec3(0.3333334)), 0.0, 1.0);
 }
 
 void vertex () {
@@ -1301,9 +1300,9 @@ void fragment () {
 	vec3 node2_shader_in4_normal = node1_in2_normal;
 	float node2_shader_in5_alpha = node0_bsdf_out0_alpha;
 	// output sockets definitions
-	float node2_var1_bsdf_alpha;
+	float node2_shader_out1_alpha;
 	
-	node2_var1_bsdf_alpha = mix(1.0, node2_shader_in5_alpha, node2_in0_fac);
+	node2_shader_out1_alpha = mix(1.0, node2_shader_in5_alpha, node2_in0_fac);
 	
 	
 	ALBEDO = node2_shader_in1_albedo;
@@ -1311,9 +1310,9 @@ void fragment () {
 	NORMAL = node2_shader_in4_normal;
 	// uncomment it only when you set diffuse mode to oren nayar
 	// ROUGHNESS = node2_shader_in3_oren_nayar_roughness;
-	EMISSION += textureLod(SCREEN_TEXTURE, SCREEN_UV - NORMAL.xy * refraction_offset
-		, ROUGHNESS).rgb * (1.0 - node2_var1_bsdf_alpha);
-	ALBEDO *= node2_var1_bsdf_alpha;
+	EMISSION += textureLod(SCREEN_TEXTURE, SCREEN_UV, ROUGHNESS).rgb * (1.0 -
+		node2_shader_out1_alpha);
+	ALBEDO *= node2_shader_out1_alpha;
 	ALPHA = 1.0;
 }
 "
