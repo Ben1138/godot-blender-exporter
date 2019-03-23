@@ -97,51 +97,51 @@ void vertex () {
 
 void fragment () {
 	
-	// node: 'Glossy BSDF'
-	// type: 'ShaderNodeBsdfGlossy'
+	// node: 'Diffuse BSDF'
+	// type: 'ShaderNodeBsdfDiffuse'
 	// input sockets handling
-	vec4 node0_in0_color = vec4(0.800000011920929, 0.800000011920929,
-		0.800000011920929, 1.0);
+	vec4 node0_in0_color = vec4(0.011042675003409386, 0.011042675003409386,
+		0.011042675003409386, 1.0);
 	float node0_in1_roughness = float(0.0);
 	vec3 node0_in2_normal = NORMAL;
 	// output sockets definitions
 	vec3 node0_bsdf_out0_albedo;
-	float node0_bsdf_out1_metallic;
-	float node0_bsdf_out2_roughness;
+	float node0_bsdf_out1_specular;
+	float node0_bsdf_out2_oren_nayar_roughness;
 	
-	node_bsdf_glossy(node0_in0_color, node0_in1_roughness, node0_bsdf_out0_albedo,
-		node0_bsdf_out1_metallic, node0_bsdf_out2_roughness);
+	node_bsdf_diffuse(node0_in0_color, node0_in1_roughness, node0_bsdf_out0_albedo,
+		node0_bsdf_out1_specular, node0_bsdf_out2_oren_nayar_roughness);
 	
 	
-	// node: 'Diffuse BSDF'
-	// type: 'ShaderNodeBsdfDiffuse'
+	// node: 'Glossy BSDF'
+	// type: 'ShaderNodeBsdfGlossy'
 	// input sockets handling
-	vec4 node1_in0_color = vec4(0.011042675003409386, 0.011042675003409386,
-		0.011042675003409386, 1.0);
+	vec4 node1_in0_color = vec4(0.800000011920929, 0.800000011920929,
+		0.800000011920929, 1.0);
 	float node1_in1_roughness = float(0.0);
 	vec3 node1_in2_normal = NORMAL;
 	// output sockets definitions
 	vec3 node1_bsdf_out0_albedo;
-	float node1_bsdf_out1_specular;
-	float node1_bsdf_out2_oren_nayar_roughness;
+	float node1_bsdf_out1_metallic;
+	float node1_bsdf_out2_roughness;
 	
-	node_bsdf_diffuse(node1_in0_color, node1_in1_roughness, node1_bsdf_out0_albedo,
-		node1_bsdf_out1_specular, node1_bsdf_out2_oren_nayar_roughness);
+	node_bsdf_glossy(node1_in0_color, node1_in1_roughness, node1_bsdf_out0_albedo,
+		node1_bsdf_out1_metallic, node1_bsdf_out2_roughness);
 	
 	
 	// node: 'Mix Shader'
 	// type: 'ShaderNodeMixShader'
 	// input sockets handling
 	float node2_in0_fac = float(0.1818181872367859);
-	vec3 node2_shader_in1_albedo = node1_bsdf_out0_albedo;
-	float node2_shader_in2_specular = node1_bsdf_out1_specular;
+	vec3 node2_shader_in1_albedo = node0_bsdf_out0_albedo;
+	float node2_shader_in2_specular = node0_bsdf_out1_specular;
 	float node2_shader_in3_oren_nayar_roughness =
-		node1_bsdf_out2_oren_nayar_roughness;
-	vec3 node2_shader_in4_normal = node1_in2_normal;
-	vec3 node2_shader_in5_albedo = node0_bsdf_out0_albedo;
-	float node2_shader_in6_metallic = node0_bsdf_out1_metallic;
-	float node2_shader_in7_roughness = node0_bsdf_out2_roughness;
-	vec3 node2_shader_in8_normal = node0_in2_normal;
+		node0_bsdf_out2_oren_nayar_roughness;
+	vec3 node2_shader_in4_normal = node0_in2_normal;
+	vec3 node2_shader_in5_albedo = node1_bsdf_out0_albedo;
+	float node2_shader_in6_metallic = node1_bsdf_out1_metallic;
+	float node2_shader_in7_roughness = node1_bsdf_out2_roughness;
+	vec3 node2_shader_in8_normal = node1_in2_normal;
 	// output sockets definitions
 	vec3 node2_shader_out0_albedo;
 	vec3 node2_shader_out13_normal;
@@ -202,6 +202,14 @@ void node_bsdf_diffuse(vec4 color, float roughness, out vec3 albedo,
     oren_nayar_roughness_out = roughness;
 }
 
+
+void node_bsdf_glossy(vec4 color, float roughness, out vec3 albedo,
+        out float metallic_out, out float roughness_out) {
+    albedo = color.rgb;
+    roughness_out = roughness;
+    metallic_out = 1.0;
+}
+
 void vertex () {
 }
 
@@ -223,11 +231,50 @@ void fragment () {
 		node0_bsdf_out1_specular, node0_bsdf_out2_oren_nayar_roughness);
 	
 	
-	ALBEDO = node0_bsdf_out0_albedo;
-	SPECULAR = node0_bsdf_out1_specular;
-	NORMAL = node0_in2_normal;
+	// node: 'Glossy BSDF'
+	// type: 'ShaderNodeBsdfGlossy'
+	// input sockets handling
+	vec4 node1_in0_color = vec4(0.800000011920929, 0.800000011920929,
+		0.800000011920929, 1.0);
+	float node1_in1_roughness = float(0.0);
+	vec3 node1_in2_normal = NORMAL;
+	// output sockets definitions
+	vec3 node1_bsdf_out0_albedo;
+	float node1_bsdf_out1_metallic;
+	float node1_bsdf_out2_roughness;
+	
+	node_bsdf_glossy(node1_in0_color, node1_in1_roughness, node1_bsdf_out0_albedo,
+		node1_bsdf_out1_metallic, node1_bsdf_out2_roughness);
+	
+	
+	// node: 'Mix Shader'
+	// type: 'ShaderNodeMixShader'
+	// input sockets handling
+	float node2_in0_fac = float(0.1818181872367859);
+	vec3 node2_shader_in1_albedo = node0_bsdf_out0_albedo;
+	float node2_shader_in2_specular = node0_bsdf_out1_specular;
+	float node2_shader_in3_oren_nayar_roughness =
+		node0_bsdf_out2_oren_nayar_roughness;
+	vec3 node2_shader_in4_normal = node0_in2_normal;
+	vec3 node2_shader_in5_albedo = node1_bsdf_out0_albedo;
+	float node2_shader_in6_metallic = node1_bsdf_out1_metallic;
+	float node2_shader_in7_roughness = node1_bsdf_out2_roughness;
+	vec3 node2_shader_in8_normal = node1_in2_normal;
+	// output sockets definitions
+	vec3 node2_shader_out0_albedo;
+	vec3 node2_shader_out13_normal;
+	
+	node2_shader_out0_albedo = mix(node2_shader_in1_albedo, node2_shader_in5_albedo,
+		node2_in0_fac);
+	node2_shader_out13_normal = mix(node2_shader_in4_normal,
+		node2_shader_in8_normal, node2_in0_fac);
+	
+	
+	ALBEDO = node2_shader_in1_albedo;
+	SPECULAR = node2_shader_in2_specular;
+	NORMAL = node2_shader_in4_normal;
 	// uncomment it only when you set diffuse mode to oren nayar
-	// ROUGHNESS = node0_bsdf_out2_oren_nayar_roughness;
+	// ROUGHNESS = node2_shader_in3_oren_nayar_roughness;
 }
 "
 
@@ -940,132 +987,83 @@ void fragment () {
 	space_convert_yup_to_zup(node0_out0_object);
 	
 	
-	// node: 'Texture Coordinate'
-	// type: 'ShaderNodeTexCoord'
-	// input sockets handling
-	// output sockets definitions
-	vec3 node1_out0_object;
-	
-	node1_out0_object = VERTEX;
-	point_space_convert_view_to_model(node1_out0_object, INV_MODEL_MAT,
-		INV_VIEW_MAT);
-	space_convert_yup_to_zup(node1_out0_object);
-	
-	
-	// node: 'Texture Coordinate'
-	// type: 'ShaderNodeTexCoord'
-	// input sockets handling
-	// output sockets definitions
-	vec3 node2_out0_object;
-	
-	node2_out0_object = VERTEX;
-	point_space_convert_view_to_model(node2_out0_object, INV_MODEL_MAT,
-		INV_VIEW_MAT);
-	space_convert_yup_to_zup(node2_out0_object);
-	
-	
 	// node: 'Separate XYZ'
 	// type: 'ShaderNodeSeparateXYZ'
 	// input sockets handling
-	vec3 node3_in0_vector = node2_out0_object;
+	vec3 node1_in0_vector = node0_out0_object;
 	// output sockets definitions
-	float node3_out0_x;
-	float node3_out1_y;
-	float node3_out2_z;
+	float node1_out0_x;
+	float node1_out1_y;
+	float node1_out2_z;
 	
-	node_separate_xyz(node3_in0_vector, node3_out0_x, node3_out1_y, node3_out2_z);
-	
-	
-	// node: 'Separate XYZ'
-	// type: 'ShaderNodeSeparateXYZ'
-	// input sockets handling
-	vec3 node4_in0_vector = node2_out0_object;
-	// output sockets definitions
-	float node4_out0_x;
-	float node4_out1_y;
-	float node4_out2_z;
-	
-	node_separate_xyz(node4_in0_vector, node4_out0_x, node4_out1_y, node4_out2_z);
-	
-	
-	// node: 'Separate XYZ'
-	// type: 'ShaderNodeSeparateXYZ'
-	// input sockets handling
-	vec3 node5_in0_vector = node2_out0_object;
-	// output sockets definitions
-	float node5_out0_x;
-	float node5_out1_y;
-	float node5_out2_z;
-	
-	node_separate_xyz(node5_in0_vector, node5_out0_x, node5_out1_y, node5_out2_z);
-	
-	
-	// node: 'Math'
-	// type: 'ShaderNodeMath'
-	// input sockets handling
-	float node6_in0_value = node5_out2_z;
-	float node6_in1_value = float(0.10000000149011612);
-	// output sockets definitions
-	float node6_out0_value;
-	
-	node_math_multiply_no_clamp(node6_in0_value, node6_in1_value, node6_out0_value);
-	
-	
-	// node: 'Math.001'
-	// type: 'ShaderNodeMath'
-	// input sockets handling
-	float node7_in0_value = node5_out1_y;
-	float node7_in1_value = float(1.0);
-	// output sockets definitions
-	float node7_out0_value;
-	
-	node_math_multiply_no_clamp(node7_in0_value, node7_in1_value, node7_out0_value);
+	node_separate_xyz(node1_in0_vector, node1_out0_x, node1_out1_y, node1_out2_z);
 	
 	
 	// node: 'Math.002'
 	// type: 'ShaderNodeMath'
 	// input sockets handling
-	float node8_in0_value = node5_out0_x;
-	float node8_in1_value = float(0.10000000149011612);
+	float node2_in0_value = node1_out0_x;
+	float node2_in1_value = float(0.10000000149011612);
 	// output sockets definitions
-	float node8_out0_value;
+	float node2_out0_value;
 	
-	node_math_multiply_no_clamp(node8_in0_value, node8_in1_value, node8_out0_value);
+	node_math_multiply_no_clamp(node2_in0_value, node2_in1_value, node2_out0_value);
+	
+	
+	// node: 'Math.001'
+	// type: 'ShaderNodeMath'
+	// input sockets handling
+	float node3_in0_value = node1_out1_y;
+	float node3_in1_value = float(1.0);
+	// output sockets definitions
+	float node3_out0_value;
+	
+	node_math_multiply_no_clamp(node3_in0_value, node3_in1_value, node3_out0_value);
+	
+	
+	// node: 'Math'
+	// type: 'ShaderNodeMath'
+	// input sockets handling
+	float node4_in0_value = node1_out2_z;
+	float node4_in1_value = float(0.10000000149011612);
+	// output sockets definitions
+	float node4_out0_value;
+	
+	node_math_multiply_no_clamp(node4_in0_value, node4_in1_value, node4_out0_value);
 	
 	
 	// node: 'Combine RGB'
 	// type: 'ShaderNodeCombineRGB'
 	// input sockets handling
-	float node9_in0_r = node8_out0_value;
-	float node9_in1_g = node7_out0_value;
-	float node9_in2_b = node6_out0_value;
+	float node5_in0_r = node2_out0_value;
+	float node5_in1_g = node3_out0_value;
+	float node5_in2_b = node4_out0_value;
 	// output sockets definitions
-	vec4 node9_out0_image;
+	vec4 node5_out0_image;
 	
-	node_combine_rgb(node9_in0_r, node9_in1_g, node9_in2_b, node9_out0_image);
+	node_combine_rgb(node5_in0_r, node5_in1_g, node5_in2_b, node5_out0_image);
 	
 	
 	// node: 'Diffuse BSDF'
 	// type: 'ShaderNodeBsdfDiffuse'
 	// input sockets handling
-	vec4 node10_in0_color = node9_out0_image;
-	float node10_in1_roughness = float(0.0);
-	vec3 node10_in2_normal = NORMAL;
+	vec4 node6_in0_color = node5_out0_image;
+	float node6_in1_roughness = float(0.0);
+	vec3 node6_in2_normal = NORMAL;
 	// output sockets definitions
-	vec3 node10_bsdf_out0_albedo;
-	float node10_bsdf_out1_specular;
-	float node10_bsdf_out2_oren_nayar_roughness;
+	vec3 node6_bsdf_out0_albedo;
+	float node6_bsdf_out1_specular;
+	float node6_bsdf_out2_oren_nayar_roughness;
 	
-	node_bsdf_diffuse(node10_in0_color, node10_in1_roughness,
-		node10_bsdf_out0_albedo, node10_bsdf_out1_specular,
-		node10_bsdf_out2_oren_nayar_roughness);
+	node_bsdf_diffuse(node6_in0_color, node6_in1_roughness, node6_bsdf_out0_albedo,
+		node6_bsdf_out1_specular, node6_bsdf_out2_oren_nayar_roughness);
 	
 	
-	ALBEDO = node10_bsdf_out0_albedo;
-	SPECULAR = node10_bsdf_out1_specular;
-	NORMAL = node10_in2_normal;
+	ALBEDO = node6_bsdf_out0_albedo;
+	SPECULAR = node6_bsdf_out1_specular;
+	NORMAL = node6_in2_normal;
 	// uncomment it only when you set diffuse mode to oren nayar
-	// ROUGHNESS = node10_bsdf_out2_oren_nayar_roughness;
+	// ROUGHNESS = node6_bsdf_out2_oren_nayar_roughness;
 }
 "
 
@@ -1102,50 +1100,50 @@ void vertex () {
 
 void fragment () {
 	
-	// node: 'Glossy BSDF'
-	// type: 'ShaderNodeBsdfGlossy'
+	// node: 'Diffuse BSDF'
+	// type: 'ShaderNodeBsdfDiffuse'
 	// input sockets handling
-	vec4 node0_in0_color = vec4(0.019991951063275337, 0.02466939389705658,
-		0.8000000715255737, 1.0);
+	vec4 node0_in0_color = vec4(0.8000000715255737, 0.003039679490029812,
+		0.009835286065936089, 1.0);
 	float node0_in1_roughness = float(0.0);
 	vec3 node0_in2_normal = NORMAL;
 	// output sockets definitions
 	vec3 node0_bsdf_out0_albedo;
-	float node0_bsdf_out1_metallic;
-	float node0_bsdf_out2_roughness;
+	float node0_bsdf_out1_specular;
+	float node0_bsdf_out2_oren_nayar_roughness;
 	
-	node_bsdf_glossy(node0_in0_color, node0_in1_roughness, node0_bsdf_out0_albedo,
-		node0_bsdf_out1_metallic, node0_bsdf_out2_roughness);
+	node_bsdf_diffuse(node0_in0_color, node0_in1_roughness, node0_bsdf_out0_albedo,
+		node0_bsdf_out1_specular, node0_bsdf_out2_oren_nayar_roughness);
 	
 	
-	// node: 'Diffuse BSDF'
-	// type: 'ShaderNodeBsdfDiffuse'
+	// node: 'Glossy BSDF'
+	// type: 'ShaderNodeBsdfGlossy'
 	// input sockets handling
-	vec4 node1_in0_color = vec4(0.8000000715255737, 0.003039679490029812,
-		0.009835286065936089, 1.0);
+	vec4 node1_in0_color = vec4(0.019991951063275337, 0.02466939389705658,
+		0.8000000715255737, 1.0);
 	float node1_in1_roughness = float(0.0);
 	vec3 node1_in2_normal = NORMAL;
 	// output sockets definitions
 	vec3 node1_bsdf_out0_albedo;
-	float node1_bsdf_out1_specular;
-	float node1_bsdf_out2_oren_nayar_roughness;
+	float node1_bsdf_out1_metallic;
+	float node1_bsdf_out2_roughness;
 	
-	node_bsdf_diffuse(node1_in0_color, node1_in1_roughness, node1_bsdf_out0_albedo,
-		node1_bsdf_out1_specular, node1_bsdf_out2_oren_nayar_roughness);
+	node_bsdf_glossy(node1_in0_color, node1_in1_roughness, node1_bsdf_out0_albedo,
+		node1_bsdf_out1_metallic, node1_bsdf_out2_roughness);
 	
 	
 	// node: 'Add Shader'
 	// type: 'ShaderNodeAddShader'
 	// input sockets handling
-	vec3 node2_shader_in0_albedo = node1_bsdf_out0_albedo;
-	float node2_shader_in1_specular = node1_bsdf_out1_specular;
+	vec3 node2_shader_in0_albedo = node0_bsdf_out0_albedo;
+	float node2_shader_in1_specular = node0_bsdf_out1_specular;
 	float node2_shader_in2_oren_nayar_roughness =
-		node1_bsdf_out2_oren_nayar_roughness;
-	vec3 node2_shader_in3_normal = node1_in2_normal;
-	vec3 node2_shader_in4_albedo = node0_bsdf_out0_albedo;
-	float node2_shader_in5_metallic = node0_bsdf_out1_metallic;
-	float node2_shader_in6_roughness = node0_bsdf_out2_roughness;
-	vec3 node2_shader_in7_normal = node0_in2_normal;
+		node0_bsdf_out2_oren_nayar_roughness;
+	vec3 node2_shader_in3_normal = node0_in2_normal;
+	vec3 node2_shader_in4_albedo = node1_bsdf_out0_albedo;
+	float node2_shader_in5_metallic = node1_bsdf_out1_metallic;
+	float node2_shader_in6_roughness = node1_bsdf_out2_roughness;
+	vec3 node2_shader_in7_normal = node1_in2_normal;
 	// output sockets definitions
 	vec3 node2_shader_out0_albedo;
 	vec3 node2_shader_out13_normal;
@@ -1423,98 +1421,78 @@ void fragment () {
 	
 	
 	
-	// node: 'Texture Coordinate'
-	// type: 'ShaderNodeTexCoord'
-	// input sockets handling
-	// output sockets definitions
-	vec3 node2_out0_object;
-	
-	node2_out0_object = VERTEX;
-	point_space_convert_view_to_model(node2_out0_object, INV_MODEL_MAT,
-		INV_VIEW_MAT);
-	space_convert_yup_to_zup(node2_out0_object);
-	
-	
 	// node: 'Math'
 	// type: 'ShaderNodeMath'
 	// input sockets handling
-	float node3_in0_value = dot(node1_in0_input, vec3(0.333333, 0.333333, 0.333333));
-	float node3_in1_value = float(0.0);
+	float node2_in0_value = dot(node1_in0_input, vec3(0.333333, 0.333333, 0.333333));
+	float node2_in1_value = float(0.0);
 	// output sockets definitions
-	float node3_out0_value;
+	float node2_out0_value;
 	
-	node_math_add_clamp(node3_in0_value, node3_in1_value, node3_out0_value);
-	
-	
-	// node: 'Reroute'
-	// type: 'NodeReroute'
-	// input sockets handling
-	vec3 node4_in0_input = node2_out0_object;
-	// output sockets definitions
-	
+	node_math_add_clamp(node2_in0_value, node2_in1_value, node2_out0_value);
 	
 	
 	// node: 'Principled BSDF'
 	// type: 'ShaderNodeBsdfPrincipled'
 	// input sockets handling
-	vec4 node5_in0_basecolor = vec4(node4_in0_input, 1.0);
-	float node5_in1_subsurface = node3_out0_value;
-	vec3 node5_in2_subsurfaceradius = vec3(1.0, 1.0, 1.0);
-	vec4 node5_in3_subsurfacecolor = vec4(0.699999988079071, 0.10000000149011612,
+	vec4 node3_in0_basecolor = vec4(node1_in0_input, 1.0);
+	float node3_in1_subsurface = node2_out0_value;
+	vec3 node3_in2_subsurfaceradius = vec3(1.0, 1.0, 1.0);
+	vec4 node3_in3_subsurfacecolor = vec4(0.699999988079071, 0.10000000149011612,
 		0.10000000149011612, 1.0);
-	float node5_in4_metallic = float(0.0);
-	float node5_in5_specular = float(0.5);
-	float node5_in6_speculartint = float(0.0);
-	float node5_in7_roughness = float(0.5);
-	float node5_in8_anisotropic = float(0.0);
-	float node5_in9_anisotropicrotation = float(0.0);
-	float node5_in10_sheen = float(0.0);
-	float node5_in11_sheentint = float(0.5);
-	float node5_in12_clearcoat = float(0.0);
-	float node5_in13_clearcoatroughness = float(0.029999999329447746);
-	float node5_in14_ior = float(1.4500000476837158);
-	float node5_in15_transmission = float(0.0);
-	float node5_in16_transmissionroughness = float(0.0);
-	vec3 node5_in17_normal = NORMAL;
-	vec3 node5_in18_clearcoatnormal = vec3(0.0, 0.0, 0.0);
-	vec3 node5_in19_tangent = TANGENT;
+	float node3_in4_metallic = float(0.0);
+	float node3_in5_specular = float(0.5);
+	float node3_in6_speculartint = float(0.0);
+	float node3_in7_roughness = float(0.5);
+	float node3_in8_anisotropic = float(0.0);
+	float node3_in9_anisotropicrotation = float(0.0);
+	float node3_in10_sheen = float(0.0);
+	float node3_in11_sheentint = float(0.5);
+	float node3_in12_clearcoat = float(0.0);
+	float node3_in13_clearcoatroughness = float(0.029999999329447746);
+	float node3_in14_ior = float(1.4500000476837158);
+	float node3_in15_transmission = float(0.0);
+	float node3_in16_transmissionroughness = float(0.0);
+	vec3 node3_in17_normal = NORMAL;
+	vec3 node3_in18_clearcoatnormal = vec3(0.0, 0.0, 0.0);
+	vec3 node3_in19_tangent = TANGENT;
 	// output sockets definitions
-	vec3 node5_bsdf_out0_albedo;
-	float node5_bsdf_out1_sss_strength;
-	float node5_bsdf_out3_specular;
-	float node5_bsdf_out2_metallic;
-	float node5_bsdf_out4_roughness;
-	float node5_bsdf_out5_clearcoat;
-	float node5_bsdf_out6_clearcoat_gloss;
-	float node5_bsdf_out7_anisotropy;
-	float node5_bsdf_out8_transmission;
-	float node5_bsdf_out9_ior;
+	vec3 node3_bsdf_out0_albedo;
+	float node3_bsdf_out1_sss_strength;
+	float node3_bsdf_out3_specular;
+	float node3_bsdf_out2_metallic;
+	float node3_bsdf_out4_roughness;
+	float node3_bsdf_out5_clearcoat;
+	float node3_bsdf_out6_clearcoat_gloss;
+	float node3_bsdf_out7_anisotropy;
+	float node3_bsdf_out8_transmission;
+	float node3_bsdf_out9_ior;
 	
-	node_bsdf_principled(node5_in0_basecolor, node5_in1_subsurface,
-		node5_in3_subsurfacecolor, node5_in4_metallic, node5_in5_specular,
-		node5_in7_roughness, node5_in12_clearcoat, node5_in13_clearcoatroughness,
-		node5_in8_anisotropic, node5_in15_transmission, node5_in14_ior,
-		node5_bsdf_out0_albedo, node5_bsdf_out1_sss_strength, node5_bsdf_out2_metallic,
-		node5_bsdf_out3_specular, node5_bsdf_out4_roughness, node5_bsdf_out5_clearcoat,
-		node5_bsdf_out6_clearcoat_gloss, node5_bsdf_out7_anisotropy,
-		node5_bsdf_out8_transmission, node5_bsdf_out9_ior);
+	node_bsdf_principled(node3_in0_basecolor, node3_in1_subsurface,
+		node3_in3_subsurfacecolor, node3_in4_metallic, node3_in5_specular,
+		node3_in7_roughness, node3_in12_clearcoat, node3_in13_clearcoatroughness,
+		node3_in8_anisotropic, node3_in15_transmission, node3_in14_ior,
+		node3_bsdf_out0_albedo, node3_bsdf_out1_sss_strength, node3_bsdf_out2_metallic,
+		node3_bsdf_out3_specular, node3_bsdf_out4_roughness, node3_bsdf_out5_clearcoat,
+		node3_bsdf_out6_clearcoat_gloss, node3_bsdf_out7_anisotropy,
+		node3_bsdf_out8_transmission, node3_bsdf_out9_ior);
 	
 	
-	ALBEDO = node5_bsdf_out0_albedo;
-	SSS_STRENGTH = node5_bsdf_out1_sss_strength;
-	SPECULAR = node5_bsdf_out3_specular;
-	METALLIC = node5_bsdf_out2_metallic;
-	ROUGHNESS = node5_bsdf_out4_roughness;
-	CLEARCOAT = node5_bsdf_out5_clearcoat;
-	CLEARCOAT_GLOSS = node5_bsdf_out6_clearcoat_gloss;
-	NORMAL = node5_in17_normal;
+	ALBEDO = node3_bsdf_out0_albedo;
+	SSS_STRENGTH = node3_bsdf_out1_sss_strength;
+	SPECULAR = node3_bsdf_out3_specular;
+	METALLIC = node3_bsdf_out2_metallic;
+	ROUGHNESS = node3_bsdf_out4_roughness;
+	CLEARCOAT = node3_bsdf_out5_clearcoat;
+	CLEARCOAT_GLOSS = node3_bsdf_out6_clearcoat_gloss;
+	NORMAL = node3_in17_normal;
 	// uncomment it when you need it
-	// TRANSMISSION = vec3(1.0, 1.0, 1.0) * node5_bsdf_out8_transmission;
+	// TRANSMISSION = vec3(1.0, 1.0, 1.0) * node3_bsdf_out8_transmission;
 	// uncomment it when you are modifing TANGENT
-	// TANGENT = normalize(cross(cross(node5_in19_tangent, NORMAL), NORMAL));
+	// TANGENT = normalize(cross(cross(node3_in19_tangent, NORMAL), NORMAL));
 	// BINORMAL = cross(TANGENT, NORMAL);
 	// uncomment it when you have tangent(UV) set
-	// ANISOTROPY = node5_bsdf_out7_anisotropy;
+	// ANISOTROPY = node3_bsdf_out7_anisotropy;
 }
 "
 
@@ -1538,32 +1516,67 @@ void node_bsdf_diffuse(vec4 color, float roughness, out vec3 albedo,
     oren_nayar_roughness_out = roughness;
 }
 
+
+void node_emission(vec4 emission_color, float strength,
+        out vec3 emission_out, out float alpha_out) {
+    emission_out = emission_color.rgb * strength;
+    alpha_out = emission_color.a;
+}
+
 void vertex () {
 }
 
 void fragment () {
 	
+	// node: 'Emission'
+	// type: 'ShaderNodeEmission'
+	// input sockets handling
+	vec4 node0_in0_color = vec4(0.800000011920929, 0.800000011920929,
+		0.800000011920929, 1.0);
+	float node0_in1_strength = float(1.0);
+	// output sockets definitions
+	float node0_emission_out1_alpha;
+	vec3 node0_emission_out0_emission;
+	
+	node_emission(node0_in0_color, node0_in1_strength, node0_emission_out0_emission,
+		node0_emission_out1_alpha);
+	
+	
+	// node: 'Mix Shader'
+	// type: 'ShaderNodeMixShader'
+	// input sockets handling
+	float node1_in0_fac = float(0.7636363506317139);
+	vec3 node1_shader_in1_albedo = vec3(0.0, 0.0, 0.0);
+	vec3 node1_shader_in2_albedo = node1_shader_in1_albedo;
+	float node1_shader_in3_alpha = node0_emission_out1_alpha;
+	vec3 node1_shader_in4_emission = node0_emission_out0_emission;
+	// output sockets definitions
+	float node1_shader_out1_alpha;
+	
+	node1_shader_out1_alpha = mix(1.0, node1_shader_in3_alpha, node1_in0_fac);
+	
+	
 	// node: 'Diffuse BSDF'
 	// type: 'ShaderNodeBsdfDiffuse'
 	// input sockets handling
-	vec4 node0_in0_color = vec4(0.7874122262001038, 0.7874122262001038,
+	vec4 node2_in0_color = vec4(0.7874122262001038, 0.7874122262001038,
 		0.7874122262001038, 1.0);
-	float node0_in1_roughness = float(0.0);
-	vec3 node0_in2_normal = NORMAL;
+	float node2_in1_roughness = float(0.0);
+	vec3 node2_in2_normal = NORMAL;
 	// output sockets definitions
-	vec3 node0_bsdf_out0_albedo;
-	float node0_bsdf_out1_specular;
-	float node0_bsdf_out2_oren_nayar_roughness;
+	vec3 node2_bsdf_out0_albedo;
+	float node2_bsdf_out1_specular;
+	float node2_bsdf_out2_oren_nayar_roughness;
 	
-	node_bsdf_diffuse(node0_in0_color, node0_in1_roughness, node0_bsdf_out0_albedo,
-		node0_bsdf_out1_specular, node0_bsdf_out2_oren_nayar_roughness);
+	node_bsdf_diffuse(node2_in0_color, node2_in1_roughness, node2_bsdf_out0_albedo,
+		node2_bsdf_out1_specular, node2_bsdf_out2_oren_nayar_roughness);
 	
 	
-	ALBEDO = node0_bsdf_out0_albedo;
-	SPECULAR = node0_bsdf_out1_specular;
-	NORMAL = node0_in2_normal;
+	ALBEDO = node2_bsdf_out0_albedo;
+	SPECULAR = node2_bsdf_out1_specular;
+	NORMAL = node2_in2_normal;
 	// uncomment it only when you set diffuse mode to oren nayar
-	// ROUGHNESS = node0_bsdf_out2_oren_nayar_roughness;
+	// ROUGHNESS = node2_bsdf_out2_oren_nayar_roughness;
 }
 "
 
