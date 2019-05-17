@@ -616,9 +616,11 @@ void fragment () {
 	float node1_in14_ior = float(1.4500000476837158);
 	float node1_in15_transmission = float(0.0);
 	float node1_in16_transmissionroughness = float(0.0);
-	vec3 node1_in17_normal = NORMAL;
-	vec3 node1_in18_clearcoatnormal = vec3(0.0, 0.0, 0.0);
-	vec3 node1_in19_tangent = TANGENT;
+	vec4 node1_in17_emission = vec4(0.0, 0.0, 0.0, 1.0);
+	float node1_in18_alpha = float(1.0);
+	vec3 node1_in19_normal = NORMAL;
+	vec3 node1_in20_clearcoatnormal = vec3(0.0, 0.0, 0.0);
+	vec3 node1_in21_tangent = TANGENT;
 	// output sockets definitions
 	vec3 node1_bsdf_out0_albedo;
 	float node1_bsdf_out1_sss_strength;
@@ -648,11 +650,11 @@ void fragment () {
 	ROUGHNESS = node1_bsdf_out4_roughness;
 	CLEARCOAT = node1_bsdf_out5_clearcoat;
 	CLEARCOAT_GLOSS = node1_bsdf_out6_clearcoat_gloss;
-	NORMAL = node1_in17_normal;
+	NORMAL = node1_in19_normal;
 	// uncomment it when you need it
 	// TRANSMISSION = vec3(1.0, 1.0, 1.0) * node1_bsdf_out8_transmission;
 	// uncomment it when you are modifing TANGENT
-	// TANGENT = normalize(cross(cross(node1_in19_tangent, NORMAL), NORMAL));
+	// TANGENT = normalize(cross(cross(node1_in21_tangent, NORMAL), NORMAL));
 	// BINORMAL = cross(TANGENT, NORMAL);
 	// uncomment it when you have tangent(UV) set
 	// ANISOTROPY = node1_bsdf_out7_anisotropy;
@@ -1453,9 +1455,11 @@ void fragment () {
 	float node3_in14_ior = float(1.4500000476837158);
 	float node3_in15_transmission = float(0.0);
 	float node3_in16_transmissionroughness = float(0.0);
-	vec3 node3_in17_normal = NORMAL;
-	vec3 node3_in18_clearcoatnormal = vec3(0.0, 0.0, 0.0);
-	vec3 node3_in19_tangent = TANGENT;
+	vec4 node3_in17_emission = vec4(0.0, 0.0, 0.0, 1.0);
+	float node3_in18_alpha = float(1.0);
+	vec3 node3_in19_normal = NORMAL;
+	vec3 node3_in20_clearcoatnormal = vec3(0.0, 0.0, 0.0);
+	vec3 node3_in21_tangent = TANGENT;
 	// output sockets definitions
 	vec3 node3_bsdf_out0_albedo;
 	float node3_bsdf_out1_sss_strength;
@@ -1485,11 +1489,11 @@ void fragment () {
 	ROUGHNESS = node3_bsdf_out4_roughness;
 	CLEARCOAT = node3_bsdf_out5_clearcoat;
 	CLEARCOAT_GLOSS = node3_bsdf_out6_clearcoat_gloss;
-	NORMAL = node3_in17_normal;
+	NORMAL = node3_in19_normal;
 	// uncomment it when you need it
 	// TRANSMISSION = vec3(1.0, 1.0, 1.0) * node3_bsdf_out8_transmission;
 	// uncomment it when you are modifing TANGENT
-	// TANGENT = normalize(cross(cross(node3_in19_tangent, NORMAL), NORMAL));
+	// TANGENT = normalize(cross(cross(node3_in21_tangent, NORMAL), NORMAL));
 	// BINORMAL = cross(TANGENT, NORMAL);
 	// uncomment it when you have tangent(UV) set
 	// ANISOTROPY = node3_bsdf_out7_anisotropy;
@@ -2014,25 +2018,29 @@ material/0 = SubResource(39)
 
 [node name="Spot001" type="SpotLight" parent="."]
 
-light_energy = 1.0
+light_specular = 1.0
 light_color = Color(1.0, 1.0, 1.0, 1.0)
+shadow_color = Color(0.0, 0.0, 0.0, 1.0)
+light_energy = 1.0
 spot_angle = 17.4
 spot_angle_attenuation = 1.25
 spot_range = 25.0
 transform = Transform(0.629608, 0.0765798, 0.77313, -0.776913, 0.06206, 0.626542, 0.0, -0.99513, 0.0985693, 5.32508, 4.74617, 0.487329)
-shadow_enabled = true
 light_negative = false
+shadow_enabled = true
 
 [node name="Spot" type="SpotLight" parent="."]
 
-light_energy = 1.0
+light_specular = 1.0
 light_color = Color(1.0, 1.0, 1.0, 1.0)
+shadow_color = Color(0.0, 0.0, 0.0, 1.0)
+light_energy = 1.0
 spot_angle = 24.3
 spot_angle_attenuation = 1.25
 spot_range = 25.0
 transform = Transform(0.633641, 0.273452, -0.723687, 0.117184, 0.890727, 0.439173, 0.764701, -0.363082, 0.532357, -4.6068, 2.54209, 4.80618)
-shadow_enabled = true
 light_negative = false
+shadow_enabled = true
 
 [node name="Plane" type="MeshInstance" parent="."]
 
